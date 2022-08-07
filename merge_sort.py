@@ -1,7 +1,7 @@
 import math
 
 
-def sort():
+def main():
     nums = [6, 4, 3, 7, 5, 1, 2]
 
     print(f'nums: {nums}\n')
@@ -22,8 +22,6 @@ def merge_sort(nums):  # 併合フェーズ
     right = merge_sort(nums[mid:])  # 右半分をマージソート
 
     result = merge(left, right)  # マージソートしたものを併合する
-
-    # print(f'result: {result}')
 
     return result
 
@@ -46,4 +44,4 @@ def merge(left, right):  # 分割統治フェーズ
 
 
 if __name__ == '__main__':
-    sort()
+    main()
