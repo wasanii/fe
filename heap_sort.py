@@ -1,70 +1,61 @@
 def main():
     nums = [5, 2, 7, 3, 6, 1, 4]
-    print(f'nums: {nums}')
+    print(f'nums: {nums}\n')
     result = heap_sort(nums)
-    print(f'result: {result}')
-
-
-def build_heap(nums):
-    # 降順ヒープをつくる
-
-    # nord = [n for n in nums]
-    # parent = [0 for n in range(len(nums))]
-    # left = [n for n in parent]
-    # right = [n for n in parent]
-
-    # ヒープを初期化
-    nord = []   # 値が入る
-    parent = []  # parent[i], left[i], right[i] には、nord[i]からつながるノードの添字が入る
-    left = []
-    right = []
-
-    for n in nums:
-        i = nums.index(n)
-        nord.append(n)
-        left.append(0)
-        right.append(0)
-
-        if len(nord) == 1:  # 新規に根に追加
-            parent.append(0)
-
-        # 子を追加していく
-        for j in range(i):  # 0番目から順に調べる
-            if right[j] == 0:  # rightを持たない最初のノードが親に決定
-                parent.append(j)
-                if left[j] == 0:  # 親にleftがなければ子は親のleftになり、
-                    left[j] = i
-                else:  # leftがあれば、子は親のrightになる
-                    right[j] = i
-                break
-
-        # 親>子ならを親子を入れ替える
-        while nord[parent[i]] > nord[i]:
-            nord[parent[i]], nord[i] = nord[i], nord[parent[i]]
-            parent[parent[i]], parent[i] = parent[i], parent[parent[i]]
-            left[parent[i]], left[i] = left[i], left[parent[i]]
-            right[parent[i]], left[i] = left[i], left[parent[i]]
-            i = parent[i]
-
-    print(f'\nnord: {nord}')
-    print(f'parent: {parent}')
-    print(f'left: {left}')
-    print(f'right: {right}')
-
-    return nord, parent, left, right
-
-
-def sort(heap):
-    result = 0
-    return result
+    print(f'\nresult: {result}')
 
 
 def heap_sort(nums):
-
+    # 降順ヒープをつくる
     heap = build_heap(nums)
-    result = sort(heap)
 
+    # 降順ヒープの根から値を1つずつ取り出し、結果の配列に右から詰めていく
+    result = sort(heap)
     return result
+
+
+def build_heap(nums):
+    heap = []
+
+    for i in range(len(nums)):
+        heap.append(nums[i])
+        i_parent = (i - 1) // 2  # 親の添字がkなら、子の添字は2i+1, 2i+2。子の添字から親の添字を逆算する
+        if i_parent >= 0:
+            rebuild_heap(heap, i_parent)  # 降順になるよう再構築する
+        print(f'heap: {heap}')
+
+    return heap
+
+
+def rebuild_heap(heap, i_parent):  # 添字kを根として、heapを再構築する
+    if i_parent < 0:  # k < 0になるのは、新規にヒープに数字を追加したときだけ。ならそのまま帰す
+        return heap
+    length = len(heap)
+    i_left = min(length - 1, i_parent * 2 + 1)
+    i_right = min(length - 1, i_left + 1)
+
+    if heap[i_left] < heap[i_right]:  # 大きい方だけ親と比較する
+        if heap[i_parent] < heap[i_right]:  # 子が親より大きければ交換する
+            heap[i_parent], heap[i_right] = heap[i_right], heap[i_parent]
+            rebuild_heap(heap, (i_parent - 1) // 2)  # 親の親へ伝播させる
+    else:
+        if heap[i_parent] < heap[i_left]:  # 子が親より大きければ交換する
+            heap[i_parent], heap[i_left] = heap[i_left], heap[i_parent]
+            rebuild_heap(heap, (i_parent - 1) // 2)
+
+    return heap
+
+
+def sort(heap):
+    result = []
+
+    while len(heap) > 1:
+        result.insert(0, heap[0])  # ヒープの先頭を取り出して、結果の配列に右から詰めていく
+        heap[0] = heap.pop()  # ヒープの末尾から根に数を持ってくる
+        rebuild_heap(heap, 0)  # 新たな根のからヒープを再構築する
+        print(f'heap: {heap}')
+
+    return heap + result
 
 
 if __name__ == '__main__':
