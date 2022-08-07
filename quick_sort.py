@@ -1,4 +1,4 @@
-def sort():
+def main():
     nums = [3, 5, 8, 1, 2, 9, 4, 7, 6]
 
     print(f'nums: {nums}')
@@ -29,4 +29,4 @@ def quick_sort(nums):
 
 
 if __name__ == '__main__':
-    sort()
+    main()

@@ -1,4 +1,4 @@
-def execute():
+def main():
     nums = [5, 2, 7, 3, 6, 1, 4]
     print(f'nums: {nums}')
     result = heap_sort(nums)
@@ -68,4 +68,4 @@ def heap_sort(nums):
 
 
 if __name__ == '__main__':
-    execute()
+    main()

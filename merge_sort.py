@@ -21,9 +21,7 @@ def merge_sort(nums):  # 併合フェーズ
     left = merge_sort(nums[:mid])  # 左半分をマージソート
     right = merge_sort(nums[mid:])  # 右半分をマージソート
 
-    result = merge(left, right)  # マージソートしたものを併合する
-
-    return result
+    return merge(left, right)  # マージソートしたものを併合する
 
 
 def merge(left, right):  # 分割統治フェーズ
