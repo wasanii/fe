@@ -22,10 +22,10 @@ def heap_sort(nums):
     heap = build_heap(nums)
 
     # 降順ヒープの根から値を1つずつ選び出し、末尾の値と交換していく
-    for last in range(len(nums) - 1, 1, -1):    # last: ヒープの後ろへ回すときの、宛先要素番号
+    for last in range(len(nums) - 1, 0, -1):    # last: ヒープの後ろへ回すときの、宛先要素番号 ※停止の0 last > 0の意味
         heap[0], heap[last] = heap[last], heap[0]
         heap = rebuild_heap(heap, last - 1)
-        print(f'heap: {heap}')
+        print(f'heap(再構築後): {heap}')
     return heap
 
 
