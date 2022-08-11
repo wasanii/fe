@@ -7,6 +7,9 @@
 # 候補を出して、辿ったりするのはたぶんできる
 # パスをどう作る
 
+# 既に行った頂点も候補に入ってしまっている。
+# これを華麗に取り除きたい
+
 def main():
     # edge = [
     #     (0, 1),
@@ -35,15 +38,29 @@ def main():
               [9]]
     start = 0
     finish = 6
+    queue = []
+    path = []
 
     print(f'vertex: {vertex}')
-    path = breadth_search(vertex, start, finish)
+    path = breadth_search(vertex, start, finish, queue, path)
     print(f'path: {path}')
 
 
-def breadth_search(edge, start, finish):
+def breadth_search(vertex, start, finish, queue, path):
 
-    pass
+    # 軌跡を記録する
+    path.append(start)
+
+    # ゴールだったら終了
+    if start == finish:
+        return path
+
+    # 頂点から行ける候補をキューに入れる
+
+    queue.extend(vertex[start])
+
+    # キューから一つ取り出し、その頂点にいく
+    breadth_search(vertex, queue.pop(0), finish, queue, path)
 
 
 if __name__ == '__main__':
