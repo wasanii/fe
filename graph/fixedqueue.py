@@ -53,8 +53,20 @@ class FixedQueue:
         x = self.que[self.front]     # データをデキューしたら、frontは一つ進め、noは一つ減らす
         self.front += 1
         self.no -= 1
-        if self.rear == self.capacity:      # frontがキューのcapacityと同じになったら、frontを添字0に戻す
-            self.rear = 0                   # 配列の末尾がキューの先頭だったら、次は配列の0番がキューの先頭になるわけ
+        if self.front == self.capacity:      # frontがキューのcapacityと同じになったら、frontを添字0に戻す
+            self.front = 0                   # 配列の末尾がキューの先頭だったら、次は配列の0番がキューの先頭になるわけ
+        return x
+
+    def pop(self) -> Any:
+        """データをポップ"""
+        if self.is_empty():
+            raise FixedQueue.Empty
+        i = (self.rear - 1) % self.__len__()
+        x = self.que[i]     # rearの一つ前のデータを返す。rearが0のときはlen(que)-1にする
+        self.rear = i
+        self.no -= 1
+        # if self.rear == self.capacity:      # rearがキューのcapacityと同じになったら、frontを添字0に戻す
+        #     self.rear = 0                   # 配列の末尾がキューの先頭だったら、次は配列の0番がキューの先頭になるわけ
         return x
 
     def peek(self) -> Any:
