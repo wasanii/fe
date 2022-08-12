@@ -61,9 +61,10 @@ class FixedQueue:
         """データをポップ"""
         if self.is_empty():
             raise FixedQueue.Empty
-        i = (self.rear - 1) % self.__len__()
-        x = self.que[i]     # rearの一つ前のデータを返す。rearが0のときはlen(que)-1にする
-        self.rear = i
+        self.rear -= 1          # rearをデクリメント。ここが今末尾データがある添字
+        if self.rear == -1:     # 先頭から一周したら末尾から出てくる
+            self.rear += self.capacity
+        x = self.que[self.rear]     # rearの一つ前のデータを返す。rearが0のときはlen(que)-1にする
         self.no -= 1
         # if self.rear == self.capacity:      # rearがキューのcapacityと同じになったら、frontを添字0に戻す
         #     self.rear = 0                   # 配列の末尾がキューの先頭だったら、次は配列の0番がキューの先頭になるわけ

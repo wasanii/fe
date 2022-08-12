@@ -56,17 +56,17 @@ def breadth_search(vertex, start, finish) -> list[int] or int:
         else:
             # 頂点から行ける候補をキューに入れる
             # 既に行ったところは通らない
-            for v in vertex[start]:
+            for v in vertex[start][::-1]:   # 番号の若い方から探索してほしいので逆順にする。.reversed()は破壊的で避ける
                 if v in history:
                     continue
                 else:
                     queue.enque(v)
-            print('queue:', end='')
+            print('stack:', end='')
             queue.dump()
             print()
 
             # キューから一つ取り出し、その頂点にいく
-            start = queue.deque()
+            start = queue.pop()
     return -1
 
 
