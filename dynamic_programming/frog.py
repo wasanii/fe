@@ -31,6 +31,7 @@ def frog(n, height):
         # 答えをINFで初期化
         result = INF
 
+        # 緩和処理
         # 足場 i - 1 から跳んできた場合。i-1番目のコスト+i番目まで跳ぶコスト。
         result = min(result, solve(i - 1) + abs(height[i] - height[i - 1]))
 
