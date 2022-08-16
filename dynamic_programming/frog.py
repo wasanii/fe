@@ -17,7 +17,7 @@ def main():
 def frog(n, height):
     """動的計画法で解く。部分問題の結果を記録しながら解いていく。"""
 
-    def solve(i):
+    def solve_memorized_recurse(i):
         print(f'i: {i}, dp[{i}]: {dp[i]}')
 
         # dpが更新されていたら即リターン。dpは1回しか更新されない
@@ -33,18 +33,28 @@ def frog(n, height):
 
         # 緩和処理
         # 足場 i - 1 から跳んできた場合。i-1番目のコスト+i番目まで跳ぶコスト。
-        result = min(result, solve(i - 1) + abs(height[i] - height[i - 1]))
+        result = min(result, solve_memorized_recurse(i - 1) + abs(height[i] - height[i - 1]))
 
         # i - 2 から跳んできた場合。i = 1の場合を除く。
         if i > 1:
-            result = min(result, solve(i - 2) + abs(height[i] - height[i - 2]))
+            result = min(result, solve_memorized_recurse(i - 2) + abs(height[i] - height[i - 2]))
 
         # 結果をメモ化して返す
         dp[i] = result
         return dp[i]
 
+    def solve_pull_based():
+        dp[0] = 0
+
+        for i in range(n):
+            dp[i] = min(dp[i], dp[i - 1] + abs(height[i] - height[i - 1]))
+            if i > 1:
+                dp[i] = min(dp[i], dp[i - 2] + abs(height[i] - height[i - 2]))
+
+        return dp
+
     dp = [INF] * n
-    return solve(n - 1)
+    return solve_pull_based()
 
 
 if __name__ == '__main__':
