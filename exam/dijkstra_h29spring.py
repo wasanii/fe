@@ -54,13 +54,14 @@ def shortest_path(distance: list[list[int]], n_point: int, sp: int, dp: int) -> 
         s_point: int = i  # 出発地からの最短距離が未確定の地点の中で、出発地からの距離が最も短い地点
         p_fixed[i] = True   # 出発地からの最短距離を確定する
         for j in range(n_point):
-            if distance[s_point][j] > 0 and not p_fixed[j]:     # 地点jが地点s_pointに隣接して、かつ、出発地からの最短距離が未確定か？
+            if not p_fixed[j] and distance[s_point][j] > 0:     # 地点jが地点s_pointに隣接して、かつ、出発地からの最短距離が未確定か？
                 new_dist: int = p_dist[s_point] + distance[s_point][j]  # 出発地からs_pointを経由して地点jに到達する経路の距離を求める
                 if new_dist < p_dist[j]:    # 既に算出してある最短経路p_dist[j]よりも短ければ
                     p_dist[j] = new_dist    # p_dist[j]とp_route[j]を更新する
                     p_route[j] = s_point
                     # このときp_dist[j]は、出発地から地点jまでの仮の最短距離となる
                     # p_route[j]には、そのときの地点jの直前の経由地の地点番号s_pointを設定する
+        pass
     s_dist: int = p_dist[dp]     # 出発地から目的地までの最短距離をs_distに設定する
     j = 0
     i = dp

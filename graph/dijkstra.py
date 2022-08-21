@@ -32,7 +32,7 @@ def solve(graph, vertexes) -> list:
     while is_updated:
         # u -> v, v -> u で、コストを更新できないか調べる
         is_updated = False
-        for from_, to, cost in edges:
+        for from_, to, cost in graph:
             if vertexes[to] > vertexes[from_] + cost:    # u -> vの最小コストが更新されたら
                 vertexes[to] = vertexes[from_] + cost      # 最小値を更新
                 path.append([from_, to])   # 経路を記録
