@@ -51,7 +51,31 @@ def sort(freq: list[int], nsize: int, node: list[int]) -> list[int]:
     return result
 
 
+def encode(k: int, parent: list[int], left: list[int]) -> None:
+    """ハフマン木から文字のビット表現を作成して表示する
+
+    Args:
+        k(int): 節を表す要素組の要素番号
+        parent(list[int]): 節の親を表す要素組の要素番号を格納した配列
+        left(list[int]): 節の左側の子を表す要素組の要素番号を格納した配列
+    Returns:
+          (None)
+
+    >>> encode(1, [6, 4, 5, 4, 5, 6, -1], [-1, -1, -1, -1, 1, 2, 3])
+    110
+    """
+    if parent[k] >= 0:    # 親が存在するなら、親をたどる
+        encode(parent[k], parent, left)
+        if k == left[parent[k]]:
+            print('0', end='')  # 親の左なら 0 を表示する
+        else:
+            print('1', end='')
+    pass
+
+
 if __name__ == '__main__':
     # print(sort([10, 2, 4, 3], 4, [0, 1, 2, 3]))
+    # encode(1, [6, 4, 5, 4, 5, 6, -1], [-1, -1, -1, -1, 1, 2, 3])
+    # print()
     import doctest
     doctest.testmod(verbose=True)
