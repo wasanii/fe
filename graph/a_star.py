@@ -21,18 +21,21 @@ def a_star(maze: list[str], start: (int, int), finish: (int, int)):
     for y, row in enumerate(maze):  # 外側のループで迷路を行ごとに分ける
         for x, cell in enumerate(row):  # 内側のループで行を文字に分ける
             if cell in (' ', 'S', 'G'):
-                est_cost.update({(x, y): manhattan_distance((x, y), finish)})     # 予想コスト
-                act_cost.update({(x, y): float('inf')})     # 初期コスト
-    act_cost.update({(start[0], start[1]): 0})     # スタート地点のコストは0
+                # est_cost.update({(x, y): manhattan_distance((x, y), finish)})     # 予想コスト
+                est_cost[(x, y)] = manhattan_distance((x, y), finish)     # 予想コスト
+                act_cost[(x, y)] = float('inf')     # 初期コスト
+    act_cost[(start[0], start[1])] = 0     # スタート地点のコストは0
 
     dept = start
-    searched: set = set()
+    # searched: set = set()
+    searched: list = []
     dx_dy = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # ←, →, ↑, ↓
 
     while dept != finish:
         print(f'dept: {dept}')
         # スタート地点を探索済にする
-        searched.add(dept)
+        # searched.add(dept)
+        searched.append(dept)
 
         # スタートからたどれる点のコストをそれぞれ計算する
         for dx, dy in dx_dy:
@@ -40,7 +43,7 @@ def a_star(maze: list[str], start: (int, int), finish: (int, int)):
             if (nxt in act_cost) and (nxt not in searched):  # たどることができて、未探索の点
                 # コスト = そこにたどり着くまでののコスト + ゴールまでの推定コスト
                 new_cost = act_cost[dept] + est_cost[nxt]
-                act_cost.update({nxt: new_cost})
+                act_cost[nxt] = new_cost
 
         # コストが最も低い点を1つ選ぶ
         min_cost = float('inf')
@@ -48,22 +51,23 @@ def a_star(maze: list[str], start: (int, int), finish: (int, int)):
             if value < min_cost:
                 dept = key
 
-    searched.add(finish)
+    # searched.add(finish)
+    searched.append(finish)
 
-    # コストの最も小さい地点を、スタートからたどる
-    shortest = []
-    dept = start
-    while dept != finish:
-        shortest.append(dept)
-        cost = float('inf')
-        for dx, dy in dx_dy:
-            nxt = (dept[0] + dx, dept[1] + dy)
-            if (nxt in searched) and (nxt not in shortest) and (act_cost[nxt] < cost):
-                cost = act_cost[nxt]
-                dept = nxt
-    shortest.append(finish)
+    # # コストの最も小さい地点を、スタートからたどる
+    # shortest = []
+    # dept = start
+    # while dept != finish:
+    #     shortest.append(dept)
+    #     cost = float('inf')
+    #     for dx, dy in dx_dy:
+    #         nxt = (dept[0] + dx, dept[1] + dy)
+    #         if (nxt in searched) and (nxt not in shortest) and (act_cost[nxt] < cost):
+    #             cost = act_cost[nxt]
+    #             dept = nxt
+    # shortest.append(finish)
 
-    return shortest
+    return searched  # shortest
 
 
 def manhattan_distance(start: (int, int), finish: (int, int)) -> int:
