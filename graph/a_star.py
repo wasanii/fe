@@ -20,7 +20,7 @@ def a_star(maze: list[str], start: (int, int), finish: (int, int)):
     act_cost: dict = dict()
     for y, row in enumerate(maze):  # 外側のループで迷路を行ごとに分ける
         for x, cell in enumerate(row):  # 内側のループで行を文字に分ける
-            if cell == ' ':
+            if cell in (' ', 'S', 'G'):
                 est_cost.update({(x, y): manhattan_distance((x, y), finish)})     # 予想コスト
                 act_cost.update({(x, y): float('inf')})     # 初期コスト
     act_cost.update({(start[0], start[1]): 0})     # スタート地点のコストは0
@@ -47,8 +47,6 @@ def a_star(maze: list[str], start: (int, int), finish: (int, int)):
         for key, value in act_cost.items():
             if value < min_cost:
                 dept = key
-
-        print(f'cost: {act_cost}')
 
     searched.add(finish)
 
@@ -82,7 +80,7 @@ def update_maze(maze: list[str], shortest: list[(int, int)]) -> list[str]:
     """迷路に最短路を * で描いて返す"""
     result = maze.copy()
 
-    for x, y in shortest:
+    for x, y in shortest[1: -1]:
         result[y] = result[y][0: x] + '*' + result[y][x + 1:]
 
     return result
@@ -97,13 +95,13 @@ def show_maze(maze: list[str]) -> None:
 def main():
     maze_str: str = '''
 ---------
--   -----
-- - -----
-- -     -
-- - --- -
-- - -   -
-- - - ---
--       -
+|   |---|
+| - ----|
+| |S    |
+| | --- |
+| | |   |
+| - - --|
+|      G|
 ---------
 '''
     maze = maze_str.strip().split('\n')     # 改行で区切って1行ごとに配列に格納
@@ -113,6 +111,7 @@ def main():
     show_maze(maze)
     shortest = a_star(maze, start, finish)
     print(f'shortest: {shortest}')
+
     opt_maze = update_maze(maze, shortest)
     show_maze(opt_maze)
 
